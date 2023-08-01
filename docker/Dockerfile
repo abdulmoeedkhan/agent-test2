@@ -8,6 +8,8 @@ COPY config.json.template .
 
 COPY docker-entrypoint.sh .
 
+RUN apk add tzdata gettext
+
 RUN chmod +x docker-entrypoint.sh
 
 ENTRYPOINT ["sh","./docker-entrypoint.sh"]

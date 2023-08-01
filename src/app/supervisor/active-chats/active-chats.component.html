@@ -93,6 +93,13 @@
                 </td>
                 <td>
                   {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
+                  <ul class="customer-labels" *ngIf="labels">
+                    <li
+                      *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
+                      matTooltip="{{ lbl.name }}"
+                      [ngStyle]="{ 'background-color': lbl.colorCode }"
+                    ></li>
+                  </ul>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
@@ -120,6 +127,13 @@
                 </td>
                 <td>
                   <span class="table-main-data"  matTooltip="{{ chat.customerName }}">{{ chat.customerName }}</span> <small matTooltip="{{ 'globals.channel-identifier' | translate }} {{ chat.channelIdentity }}">({{ chat.channelIdentity }})</small>
+                  <ul class="customer-labels" *ngIf="labels">
+                    <li
+                      *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
+                      matTooltip="{{ lbl.name }}"
+                      [ngStyle]="{ 'background-color': lbl.colorCode }"
+                    ></li>
+                  </ul>
                 </td>
                 <td>
                   <span class="table-main-data">{{ chat.activeSince | amDuration: "seconds" }}</span> <small>{{ "supervisor.ago" | translate }}</small>

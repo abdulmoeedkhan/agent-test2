@@ -1,6 +1,5 @@
 import { Injectable, OnInit } from "@angular/core";
-import { Observable, Subject, timer } from "rxjs";
-import { map, takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 import { cacheService } from "./cache.service";
 import { snackbarService } from "./snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -30,6 +29,7 @@ export class SipService implements OnInit {
   isSipLoggedIn: boolean = false;
   agentMrdStates: any;
   customerNumber: any = "";
+  isSubscriptionFailed = false;
 
   constructor(
     private _appConfigService: appConfigService,
@@ -39,8 +39,7 @@ export class SipService implements OnInit {
     private _httpService: httpService,
     private _snackbarService: snackbarService,
     private _sharedService: sharedService
-  ) {
-  }
+  ) {}
   ngOnInit(): void {}
 
   initMe() {
@@ -49,7 +48,8 @@ export class SipService implements OnInit {
         this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
           if (e.msg == "stateChanged") {
             this.agentMrdStates = e.data;
-            if (!this.isSipLoggedIn && this.checkAgentExtensionAttribute(this._cacheService.agent.attributes)) this.loginSip();
+            if (!this.isSubscriptionFailed && !this.isSipLoggedIn && this.checkAgentExtensionAttribute(this._cacheService.agent.attributes))
+              this.loginSip();
           }
         });
       }
@@ -98,8 +98,12 @@ export class SipService implements OnInit {
         attributes.agentExtension[0] !== ""
       ) {
         return true;
+      } else {
+        this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
+        return false;
       }
-      return false;
+    } else {
+      // this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
     }
   }
 
@@ -116,7 +120,7 @@ export class SipService implements OnInit {
         if (event.response.state.toLowerCase() == "logout") {
           this.isSipLoggedIn = false;
           this.notReadyAgentState();
-          this._snackbarService.open(this._translateService.instant("snackbar.SIP-Logout-Successful"), "err");
+          this._snackbarService.open(this._translateService.instant("snackbar.SIP-Logout-Successful"), "succ");
           console.log("Connection Expired, CTI Status logout==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {
@@ -133,27 +137,33 @@ export class SipService implements OnInit {
         let cacheDialog: any = this.getDialogFromCache(cacheId);
         if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
       } else if (event.event == "Error") {
+        console.log("test==>")
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
           this.notReadyAgentState();
         } else if (event.response.type.toLowerCase() == "subscriptionfailed") {
+          this.isSubscriptionFailed = true;
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
         } else if (event.response.type.toLowerCase() == "generalerror") {
+          console.log("test1==>")
           if (event.response.description.toLowerCase() == "canceled") {
+            console.log("test2==>")
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
           } else {
+            console.log("test3==>")
             let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
             let dialogCache: any = this.getDialogFromCache(cacheId);
             if (dialogCache && dialogCache.dialogState == "active") {
+              console.log("test4==>")
               this.handleCallDroppedEvent(cacheId, event.dialog, "call_end", undefined, "DIALOG_ENDED", undefined);
             }
+            console.log("test5==>")
             this.removeNotification(event.response.dialog);
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
             this.notReadyAgentState();
           }
         }
-        console.log("[Sip Error Event] ==>", event);
       }
     } catch (e) {
       console.error("SIP ERROR sip==>", e);
@@ -206,7 +216,9 @@ export class SipService implements OnInit {
         // this.setDialogCache(dialogEvent, "DROPPED");
         if (dialogEvent.response.dialog.callEndReason == "Canceled") {
           this.removeNotification(dialogState.dialog);
+          this.notReadyAgentState();
         }
+
         this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", undefined);
       }
     } catch (e) {
@@ -319,19 +331,22 @@ export class SipService implements OnInit {
           action: "agentState",
           state: { name: "READY", reasonCode: null }
         });
-
-        setTimeout(() => {
-          this._socketService.emit("changeAgentState", {
-            agentId: this.agentMrdStates.agent.id,
-            action: "agentMRDState",
-            state: "READY",
-            mrdId: voiceMrdObj.mrd.id
-          });
-        }, 500);
       }
+      setTimeout(() => {
+        this.makeCXVoiceMRDReady(voiceMrdObj);
+      }, 500);
     } catch (error) {
       console.error("Ready State for Sip==>", error);
     }
+  }
+
+  makeCXVoiceMRDReady(voiceMrdObj) {
+    this._socketService.emit("changeAgentState", {
+      agentId: this.agentMrdStates.agent.id,
+      action: "agentMRDState",
+      state: "READY",
+      mrdId: voiceMrdObj.mrd.id
+    });
   }
 
   // from the list of mrds, it will return voice mrd
@@ -573,6 +588,7 @@ export class SipService implements OnInit {
   acceptCallOnSip(command: { action: string; parameter: { dialogId: any } }) {
     postMessage(command);
   }
+
   endCallOnSip() {
     try {
       let command = {
@@ -635,7 +651,7 @@ export class SipService implements OnInit {
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
         let D1: any = this.getDialogFromCache(cacheId);
         let state;
-        if (voiceTask.state.name.toLowerCase() == "reserved")  state = { state: "alerting", taskId: voiceTask.id };
+        if (voiceTask.state.name.toLowerCase() == "reserved") state = { state: "alerting", taskId: voiceTask.id };
         if (D1 && dialogState.dialog == null) {
           this.handleCallDroppedEvent(cacheId, D1, "call_end", undefined, "DIALOG_ENDED", state);
         }
@@ -683,7 +699,8 @@ export class SipService implements OnInit {
 
       if (this.taskList && this.taskList.length > 0) {
         for (let i = 0; i <= this.taskList.length; i++) {
-          if (this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE") return this.taskList[i];
+          if (this.taskList[i] && this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE")
+            return this.taskList[i];
         }
       }
       return null;
@@ -694,15 +711,17 @@ export class SipService implements OnInit {
 
   logout() {
     try {
-      let command = {
-        action: "logout",
-        parameter: {
-          reasonCode: "Logged Out",
-          userId: this._cacheService.agent.attributes.agentExtension[0],
-          clientCallbackFunction: this.clientCallback
-        }
-      };
-      postMessage(command);
+      if (this.isSipLoggedIn) {
+        let command = {
+          action: "logout",
+          parameter: {
+            reasonCode: "Logged Out",
+            userId: this._cacheService.agent.attributes.agentExtension[0],
+            clientCallbackFunction: this.clientCallback
+          }
+        };
+        postMessage(command);
+      }
     } catch (error) {
       console.error("[Error] Handle Logout for Sip==>", error);
     }

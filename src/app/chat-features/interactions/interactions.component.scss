@@ -2914,7 +2914,7 @@ vg-controls.hide {
   }
 }
 
-.chat-message.voice {
+.chat-message.voice, .chat-message.custom {
   .file-type-stamp {
     display: none !important;
   }
@@ -3813,4 +3813,26 @@ vg-controls.hide {
 .doc-bar {
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.url-title, .url-link{
+  text-align: center;
+  display: inline-block;
+  max-width: 300px;
+}
+
+
+//custom-message-type
+.custom-message-type{
+  width: 100%;
+  max-width: 800px;
+  pre:last-child{
+    margin-bottom: 0;
+  }
+}
+
+
+
+.private-reply-icon{
+  cursor: pointer;
 }

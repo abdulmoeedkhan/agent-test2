@@ -5,25 +5,25 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #mainMenu="matMenu">
-              <!-- <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+        <!-- <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
                mat-menu-item class="main-menu-item">
                   <span>Dashboard</span>
                </button> -->
-            <button routerLink="/supervisor/announcement" routerLinkActive="active"  [routerLinkActiveOptions]="{exact:true}"
-           mat-menu-item class="main-menu-item" *ngIf="('supervisor' | authPipe : 'view_all') as result">
-            <span>Team Announcements </span>
-             </button>
-        <button  routerLink="/customers/chats"
-          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+        <button routerLink="/supervisor/announcement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item" *ngIf="('supervisor' | authPipe : 'view_all') as result">
+          <span>Team Announcements </span>
+        </button>
+        <button routerLink="/customers/chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
           <span>{{'app-header.customer-conversation-view' | translate}}</span>
         </button>
         <button *ngIf="('customer' | authPipe : 'view') as result" routerLink="/customers/phonebook"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>{{'app-header.customer-list-view' | translate}}</span>
         </button>
-        <button *ngIf="('customer-labels' | authPipe : 'assign_label') as result" routerLink="/label" routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact:true}" [routerLinkActiveOptions]="{exact:true}" mat-menu-item
-          class="main-menu-item">
+        <button *ngIf="('customer-labels' | authPipe : 'assign_label') as result" routerLink="/label"
+          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
           <span>{{'app-header.customer-labels' | translate}}</span>
         </button>
         <button *ngIf="('subscribed-list' | authPipe : 'view') as result" routerLink="/subscribed-list"
@@ -34,8 +34,8 @@
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>{{'app-header.customer-schema' | translate}}</span>
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="supervisor"
-          *ngIf="('supervisor' | authPipe : 'view_all') as result" mat-menu-item class="main-menu-item">
+        <button mat-menu-item [matMenuTriggerFor]="supervisor" *ngIf="('supervisor' | authPipe : 'view_all') as result"
+          mat-menu-item class="main-menu-item">
           <span>{{'app-header.dashboard' | translate}}</span>
         </button>
       </mat-menu>
@@ -53,8 +53,8 @@
           <span>{{'app-header.queued-conversations-detail' | translate}}
           </span>
         </button>
-        <button routerLink="/supervisor/active-agents-detail" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
+        <button routerLink="/supervisor/active-agents-detail" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>{{'app-header.active-agents-detail' | translate | titlecase}}
           </span>
         </button>
@@ -63,6 +63,9 @@
 
       <img src="assets/images/expertflow-logo.png">
     </div>
+    <!-- <span [innerHTML]="'Linkify the following URL: https://github.com/anthonynahas/ngx-linkifyjs and share it <3' | linkify"></span> -->
+
+
     <div class="col-md-8 col-sm-7 right-profile-area">
 
       <div class="info">
@@ -109,11 +112,10 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div> -->
-        <div class="announcement-trigger-area"  >
-          <span class="notification-hint" *ngIf="unreadAnnouncements > 0">{{ unreadAnnouncements  }}</span>
-          <button mat-icon-button  class="announcement-trigger"
-                  [ngClass]="{'announcement-tab-opened': sidenav.opened}"
-                  (click)="sidenav.toggle()">
+        <div class="announcement-trigger-area">
+          <span class="notification-hint" *ngIf="unreadAnnouncements > 0">{{ unreadAnnouncements }}</span>
+          <button mat-icon-button class="announcement-trigger" [ngClass]="{'announcement-tab-opened': sidenav.opened}"
+            (click)="sidenav.toggle()">
             <!--            <img src="assets/images/announcement.svg">-->
             <mat-icon>notifications</mat-icon>
           </button>
@@ -162,15 +164,21 @@
                     <img src="assets/images/dummy-user.svg" alt="Agent">
                   </div>
                   <h4 [matTooltip]="_cacheService.agent.username">{{_cacheService.agent.username}}</h4>
-                  <span *ngIf="_finesseService?.finesseAgent?.extension || _cacheService?.agent?.attributes?.agentExtension">(Ext:
+                  <span
+                    *ngIf="_finesseService?.finesseAgent?.extension || _cacheService?.agent?.attributes?.agentExtension">(Ext:
                     {{_finesseService?.finesseAgent?.extension ? _finesseService?.finesseAgent?.extension :
-                    (_cacheService?.agent?.attributes.agentExtension && _cacheService?.agent?.attributes.agentExtension != "" && _cacheService?.agent?.attributes.agentExtension != null && _cacheService?.agent?.attributes.agentExtension != undefined && _cacheService?.agent?.attributes.agentExtension[0] != "" ? _cacheService?.agent?.attributes.agentExtension[0] : 'N/A')}})</span>
+                    (_cacheService?.agent?.attributes.agentExtension && _cacheService?.agent?.attributes.agentExtension
+                    != "" && _cacheService?.agent?.attributes.agentExtension != null &&
+                    _cacheService?.agent?.attributes.agentExtension != undefined &&
+                    _cacheService?.agent?.attributes.agentExtension[0] != "" ?
+                    _cacheService?.agent?.attributes.agentExtension[0] : 'N/A')}})</span>
                 </div>
-                <p *ngIf="('state-change' | authPipe : 'manage_state_change') as result" class="menu-trigger-custom state-trigger">
+                <p *ngIf="('state-change' | authPipe : 'manage_state_change') as result"
+                  class="menu-trigger-custom state-trigger">
                   <span class="inner-btn">{{'globals.state' | translate}}</span>
 
-                  <button [disabled]="disableMrdActions"  mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
-                    (click)="$event.stopPropagation()"
+                  <button [disabled]="disableMrdActions" mat-button #stateTrigger="matMenuTrigger"
+                    [matMenuTriggerFor]="agentState" (click)="$event.stopPropagation()"
                     class="{{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
                     <span class="ellipsis">{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
                       (_cacheService.agentPresence.state.reasonCode != null ?' - '+
@@ -190,8 +198,10 @@
                     *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
                     <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
                       <span class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
-                      <mat-slide-toggle [disabled]="disableMrdActions" (change)="changeMRD($event,agentMrdState)"
-                        [checked]="agentMrdState.state | getmrdswitches" color="primary"></mat-slide-toggle>
+                      <mat-slide-toggle
+                        [disabled]="disableMrdActions || (agentMrdState.mrd.id == _appConfigService.config.CX_VOICE_MRD && _appConfigService.config.isCxVoiceEnabled &&  !_sipService.isSipLoggedIn)"
+                        (change)="changeMRD($event,agentMrdState)" [checked]="agentMrdState.state | getmrdswitches"
+                        color="primary"></mat-slide-toggle>
                     </p>
                   </div>
                 </div>
@@ -295,9 +305,9 @@
 
 
 
-  <mat-sidenav-container  hasBackdrop="true"  class="right-canned-message-list announcement-tab"
-                          [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
-    <mat-sidenav #sidenav position="end"  mode="over" disableClose mode="over">
+  <mat-sidenav-container hasBackdrop="true" class="right-canned-message-list announcement-tab"
+    [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
+    <mat-sidenav #sidenav position="end" mode="over" disableClose mode="over">
 
 
       <div class="announcement-tab-header">

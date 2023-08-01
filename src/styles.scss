@@ -3003,6 +3003,15 @@ body {
   min-width: 5px;
 }
 
+.mat-form-field-appearance-outline{
+  .mat-form-field-outline-start {
+    border-right-style: none !important;
+  }
+  .mat-form-field-outline-end {
+    border-left-style: none !important;
+  }
+}
+
 .schema-box.cdk-drag.cdk-drag-dragging,
 .schema-box.cdk-drag.cdk-drag-preview {
   box-shadow: 0 0 10px darken($main-color-background, 50%);
@@ -4205,4 +4214,17 @@ mat-select {
   z-index: 2;
   cursor: pointer;
   color: #999;
+}
+
+.custom {
+  .mat-expansion-indicator{
+    margin-right: 17px;
+    margin-bottom: 4px;
+}
+  
+
+.plain-text-check{
+visibility: hidden;
+display: none;
+}
 }

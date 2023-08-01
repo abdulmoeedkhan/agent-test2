@@ -509,7 +509,17 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
       }
     );
   }
+  getInstaPostData(postId, accessToken, INSTHOSTAPI) : Observable<any> {
+    return this._httpClient.get<any> (
+      `${INSTHOSTAPI}/${postId}?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=id,ig_id,is_comment_enabled,media_type,media_url,owner,timestamp,username,comments,caption`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    )
 
+  }
   ccmVOICEChannelSession(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.ccmChannelSession}`, data, {
       headers: new HttpHeaders({

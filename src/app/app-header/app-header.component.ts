@@ -100,7 +100,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
 
     // }
 
-    console.log("arry val updayted",this.checkRoles);
+    
 
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {

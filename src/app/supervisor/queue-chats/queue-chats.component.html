@@ -63,11 +63,13 @@
                 <span class="channel-icon"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 {{ chat.customerName }}
                 <small>({{ chat.channelIdentity }})</small>
-                <!-- <ul class="customer-labels">
-                <li matTooltip="Marketing" style="background: #32b67a;"></li>
-                <li matTooltip="Corporate" style="background: #f34f1b;"></li>
-                <li matTooltip="Product Support" style="background: #536ce8;"></li>
-              </ul> -->
+                <ul class="customer-labels" *ngIf="labels">
+                  <li
+                    *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
+                    matTooltip="{{ lbl.name }}"
+                    [ngStyle]="{ 'background-color': lbl.colorCode }"
+                  ></li>
+                </ul>
               </td>
               <td>
                 {{ chat.waitingSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>

@@ -61,14 +61,14 @@ describe("InteractionsComponent", () => {
       );
     });
 
-    it("FBPostComments should be null", () => {
+    it("postComments should be null", () => {
       expect(component).toBeTruthy();
       let postId = 1;
       let selectedCommentId = 2;
       component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.selectedCommentId).toBe(2);
-      expect(component.FBPostData).toBeDefined();
-      expect(component.FBPostComments).toBe(null);
+      expect(component.postData).toBeDefined();
+      expect(component.postComments).toBe(null);
     });
 
     it("fullPostView should be truthy", () => {
@@ -105,14 +105,14 @@ describe("InteractionsComponent", () => {
       );
     });
 
-    it("FBPostData and FBPostComments should be defined", () => {
+    it("postData and postComments should be defined", () => {
       expect(component).toBeTruthy();
       let postId = 1;
       let selectedCommentId = 2;
       component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.selectedCommentId).toBe(selectedCommentId);
-      expect(component.FBPostData).toBeDefined();
-      expect(component.FBPostComments).toBeDefined();
+      expect(component.postData).toBeDefined();
+      expect(component.postComments).toBeDefined();
     });
 
     it("fullPostView should be truthy", () => {
@@ -152,15 +152,15 @@ describe("InteractionsComponent", () => {
       );
     });
 
-    it("Both FBPostData and FBPostComments should be null", () => {
+    it("Both postData and postComments should be null", () => {
       expect(component).toBeTruthy();
       let postId = 1;
       let selectedCommentId = 2;
       component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.selectedCommentId).toBe(null);
-      expect(component.FBPostData).toBe(null);
+      expect(component.postData).toBe(null);
       expect(component.fullPostView).toBeFalsy();
-      expect(component.FBPostComments).toBe(null);
+      expect(component.postComments).toBe(null);
     });
 
     it("fullPostView should be falsy", () => {

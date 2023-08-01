@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    // this.onTopicData(mockTopicData, "12345", "");
+     //this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -335,7 +335,6 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
-
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
@@ -374,9 +373,10 @@ export class socketService {
           cimEvent.data.body.type.toLowerCase() == "comment" &&
           cimEvent.data.body.itemType.toLowerCase() != "text" &&
           cimEvent.data.body.itemType.toLowerCase() != "video" &&
-          cimEvent.data.body.itemType.toLowerCase() != "image"
+          cimEvent.data.body.itemType.toLowerCase() != "image" &&
+          cimEvent.data.body.itemType.toLowerCase() !="private_reply"
         ) {
-          this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
+          this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
         // for agent type message change the status of message
         else if (cimEvent.name.toLowerCase() == "agent_message" || cimEvent.name.toLowerCase() == "whisper_message") {
@@ -494,9 +494,11 @@ export class socketService {
           event.data.body.type.toLowerCase() == "comment" &&
           event.data.body.itemType.toLowerCase() != "text" &&
           event.data.body.itemType.toLowerCase() != "video" &&
-          event.data.body.itemType.toLowerCase() != "image"
+          event.data.body.itemType.toLowerCase() != "image" &&
+          event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
-          this.processFaceBookCommentActions(conversation.messages, event.data);
+          this.processCommentActions(conversation.messages, event.data);
+         
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
@@ -1685,16 +1687,16 @@ export class socketService {
     });
   }
 
-  processFaceBookCommentActions(cimMessages, message) {
+  processCommentActions(cimMessages, message) {
     if (["like", "hide", "delete"].includes(message.body.itemType.toLowerCase())) {
-      let fbCommentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
-      if (fbCommentMessage) {
+      let commentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
+      if (commentMessage) {
         if (message.body.itemType.toLowerCase() == "like") {
-          fbCommentMessage["isLiked"] = true;
+          commentMessage["isLiked"] = true;
         } else if (message.body.itemType.toLowerCase() == "hide") {
-          fbCommentMessage["isHidden"] = true;
+          commentMessage["isHidden"] = true;
         } else if (message.body.itemType.toLowerCase() == "delete") {
-          fbCommentMessage["isDeleted"] = true;
+          commentMessage["isDeleted"] = true;
         }
       }
     }

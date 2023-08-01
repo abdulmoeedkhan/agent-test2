@@ -184,7 +184,7 @@ export class CustomerInfoComponent implements OnInit {
         } else {
           console.log("No Dialog Found==>");
         }
-      } if (this.cxVoiceSession) {
+      } else if (this.cxVoiceSession) {
         let cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
         let cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
         if (cacheDialog) {

@@ -8,6 +8,7 @@ import { Subscription, timer } from "rxjs";
 import { map, retry } from "rxjs/operators";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
+import { CustomerLabels } from "src/app/models/labels/labels";
 
 @Component({
   selector: "app-queue-chats",
@@ -22,6 +23,7 @@ export class QueueChatsComponent implements OnInit {
   supervisedTeams: any = [];
   selectedTeam: any = "";
   settings: any = {};
+  labels:CustomerLabels[]
   selectedQueues: any = [];
   sortOrder: "asc" | "desc" = "asc";
 
@@ -35,6 +37,7 @@ export class QueueChatsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadLabels()
     this.settings = {
       text: "All Queues",
       selectAllText: "Select All",
@@ -53,7 +56,13 @@ export class QueueChatsComponent implements OnInit {
       this.startRefreshTimer();
     }
   }
+  loadLabels():void {
+    this._httpService.getLabels().subscribe((e) => {
+      this.labels = e;
+      console.log("labels",this.labels)
 
+    });
+  }
   // to start timer using rxjs `timer`
   startRefreshTimer() {
     try {
