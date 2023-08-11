@@ -8,6 +8,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { snackbarService } from "src/app/services/snackbar.service";
 
 
+
 @Component({
   selector: "app-announcement-dialog",
   templateUrl: "./announcement-dialog.component.html",
@@ -162,6 +163,11 @@ export class AnnouncementDialogComponent implements OnInit {
   onClose() {
     this.dialog.closeAll();
   }
+
+ onSchduledDate(d){
+  console.log(d);
+ }
+
 
   onValidateExpiryDate(d) {
     let date = new Date(d);

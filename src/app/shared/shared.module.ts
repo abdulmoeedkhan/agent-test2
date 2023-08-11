@@ -99,6 +99,7 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
+import { CustomDatePipe } from './pipes/customdatetime.pipe';
 
 @NgModule({
   declarations: [
@@ -133,6 +134,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     channelNamePipe,
     getSenderIdPipe,
     AuthPipe,
+    CustomDatePipe,
     TableFilterPipe,
     getCheckedChannelSessionPipe,
     filterAgentParticipantClass,
@@ -307,6 +309,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     getSenderIdPipe,
     timeDurationPipe,
     AuthPipe,
+    CustomDatePipe,
     getCheckedChannelSessionPipe,
     timeDurationFromParticipantPipe,
     TranslateModule,

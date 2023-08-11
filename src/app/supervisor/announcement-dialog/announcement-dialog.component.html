@@ -55,18 +55,48 @@
           <mat-form-field [formGroup]="formGroup" appearance="outline" >
             <input matInput [ngxMatDatetimePicker]="picker1" [min]="announceDateMin" [formControl]="announceDate" (dateChange)="onValidateExpiryDate(announceDate.value)" >
             <mat-datepicker-toggle matSuffix  [for]="picker1"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker1 [stepHour]="1" [stepMinute]="5">
+            <ngx-mat-datetime-picker #picker1 [stepHour]="1" [stepMinute]="5" format="YYYY-MM-DD HH:mm"  >
             </ngx-mat-datetime-picker>
             <mat-error *ngIf="announceDate.hasError('required')">
               {{'supervisor.select-calender'  | translate }}
             </mat-error>
           </mat-form-field>
         </div>
+        <!-- <div class="text-field date-selection">
+          <label>{{ 'supervisor.date-time' | translate }}</label>
+          <mat-form-field [formGroup]="formGroup" appearance="outline">
+            <input
+              matInput
+              [ngxMatDatetimePicker]="picker1"
+              [min]="announceDateMin"
+              [formControl]="announceDate"
+              (dateChange)="onValidateExpiryDate(announceDate.value)"
+              [value]="announceDate.value | customDate "
+            />
+           
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker
+              #picker1
+              [stepHour]="1"
+              [stepMinute]="5"
+              format="YYYY-MM-DD HH:mm"
+            >
+            </ngx-mat-datetime-picker>
+            <mat-error *ngIf="announceDate.hasError('required')">
+              {{ 'supervisor.select-calender' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div> -->
+        
+        
+
+        
         <div class="text-field date-selection">
           <label>{{'supervisor.expiry-date'  | translate }}</label>
+
           <mat-form-field appearance="outline" >
-            <!-- [max]="maxDateVal" -->
-            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [max]="expireDateMax" [formControl]="expireDate">
+            
+            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [max]="expireDateMax" [formControl]="expireDate" (dateChange)="onSchduledDate(announceDate.value)">
             <mat-datepicker-toggle matSuffix  [for]="picker3"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker3 [stepHour]="1" [stepMinute]="5">
             </ngx-mat-datetime-picker>
