@@ -59,9 +59,9 @@ export class AnnouncementDialogComponent implements OnInit {
   
   ngOnInit() {
     let date = new Date(this.expireDateMin);
-    date.setMinutes(date.getMinutes() + 10);
+    date.setMinutes(date.getMinutes() +10);
     this.expireDate = new FormControl(date, [Validators.required]);
-
+    this.onValidateExpiryDate(new Date());
     // let _date = new Date();
     // _date.setDate(this.expireDateMin.getDate() + 5);
     // this.maxDate = _date;
@@ -171,10 +171,10 @@ export class AnnouncementDialogComponent implements OnInit {
 
   onValidateExpiryDate(d) {
     let date = new Date(d);
-    date.setMinutes(date.getMinutes() + 10);
+    date.setMinutes(date.getMinutes() );
     this.expireDateMin = date;
     let _date = new Date(d);
-    _date.setMinutes(_date.getMinutes() + 10);
+    _date.setMinutes(_date.getMinutes() );
 
 
     this.expireDateMax=new Date(this.expireDateMin);
