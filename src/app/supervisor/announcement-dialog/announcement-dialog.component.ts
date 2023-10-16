@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { snackbarService } from "src/app/services/snackbar.service";
+//import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class AnnouncementDialogComponent implements OnInit {
   });
 
   constructor(
+    //private datePipe: DatePipe,
     private dialog: MatDialog,
     private _cacheService: cacheService,
     private _httpService: httpService,
@@ -58,19 +60,14 @@ export class AnnouncementDialogComponent implements OnInit {
   
   ngOnInit() {
     let date = new Date(this.expireDateMin);
-    date.setMinutes(date.getMinutes() + 10);
+    date.setMinutes(date.getMinutes()+10);
     this.expireDate = new FormControl(date, [Validators.required]);
     this.onValidateExpiryDate(new Date());
-    // let _date = new Date();
-    // _date.setDate(this.expireDateMin.getDate() + 5);
-    // this.maxDate = _date;
 
 
-    // this.expireDateMax=new Date(this.expireDateMin);
-    // this.maxDate= this.expireDateMax.setHours(120);
 
 
-  
+
     if (this.dataID !== null) {
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe(res => {
         this.setRowObj = {
@@ -164,11 +161,12 @@ export class AnnouncementDialogComponent implements OnInit {
   }
 
   onValidateExpiryDate(d) {
+
     let date = new Date(d);
-    date.setMinutes(date.getMinutes() + 10);
+    date.setMinutes(date.getMinutes() +10);
     this.expireDateMin = date;
     let _date = new Date(d);
-    _date.setMinutes(_date.getMinutes() + 10);
+    _date.setMinutes(_date.getMinutes() +10);
 
 
     this.expireDateMax=new Date(this.expireDateMin);
@@ -177,28 +175,24 @@ export class AnnouncementDialogComponent implements OnInit {
     this.expireDate = new FormControl(_date, [Validators.required]);
   }
 
-  // confirmationDialog() {
-  //   //this.dialog.closeAll();
-  //   const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
-  //     width: "490px",
-  //     panelClass: "confirm-dialog",
-  //     data: this.postData
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     this._httpService.getAnnouncements();
-  //     dialogRef.close()
-  //     this.dialog.closeAll();
-  //   });
-
-
+  // onValidateExpiryDate(d) {
+  //   let date = new Date(d);
+  //   date.setMinutes(date.getMinutes() + 10);
+  //   this.expireDateMin = date;
+  //   let _date = new Date(d);
+  //   _date.setMinutes(_date.getMinutes() + 10);
+  //   // Format the date in 12-hour format with AM/PM
+  //   const formattedDate = this.datePipe.transform(_date, 'MM/dd/yyyy hh:mm a'); 
+  //   this.expireDateMax = new Date(this.expireDateMin);
+  //   this.maxDate = this.expireDateMax.setHours(120); 
+  //   this.expireDate = new FormControl(formattedDate, [Validators.required]);
   // }
-
+  
   onItemSelect(item: any) {
-    // console.log(this.selectedTeams);
+    
   }
   OnItemDeSelect(item: any) {
-    //console.log(this.selectedTeams);
+  
   }
   onSelectAll(items: any) {
   }

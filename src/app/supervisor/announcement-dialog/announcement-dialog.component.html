@@ -55,7 +55,7 @@
           <mat-form-field [formGroup]="formGroup" appearance="outline" >
             <input matInput [ngxMatDatetimePicker]="picker1" [min]="announceDateMin" [formControl]="announceDate" (dateChange)="onValidateExpiryDate(announceDate.value)" >
             <mat-datepicker-toggle matSuffix  [for]="picker1"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker1 [stepHour]="1" [stepMinute]="5">
+            <ngx-mat-datetime-picker #picker1 [stepHour]="1" [stepMinute]="5" [format]="12">
             </ngx-mat-datetime-picker>
             <mat-error *ngIf="announceDate.hasError('required')">
               {{'supervisor.select-calender'  | translate }}
@@ -68,7 +68,7 @@
             <!-- [max]="maxDateVal" -->
             <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [max]="expireDateMax" [formControl]="expireDate">
             <mat-datepicker-toggle matSuffix  [for]="picker3"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker3 [stepHour]="1" [stepMinute]="5">
+            <ngx-mat-datetime-picker #picker3 [stepHour]="1" [stepMinute]="5" [format]="12">
             </ngx-mat-datetime-picker>
             <mat-error *ngIf="expireDate.hasError('required')">
               {{'supervisor.select-calender'  | translate }}
