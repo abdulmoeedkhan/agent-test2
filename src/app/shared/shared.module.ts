@@ -61,6 +61,10 @@ import { sentenceCasePipe } from "./pipes/sentenceCase.pipe";
 import { convertToFormDataPipe } from "./pipes/convertToFormData.pipe";
 import { getFirstTwoLettersPipe } from "./pipes/getFirstTwoLetters.pipe";
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from "ngx-mat-datetime-picker";
+//import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+//import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AngularMultiSelectModule } from "angular2-multiselect-dropdown";
 import { NgScrollbarModule } from "ngx-scrollbar";
 import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
@@ -104,6 +108,18 @@ import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
+
+ const DATETIME_FORMATS = {
+  parse: {
+    dateInput: 'l, L, LTS',
+  },
+  display: {
+    dateInput: 'DD/MM/YY HH:mm',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM-YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -187,6 +203,9 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     MatNativeDateModule,
     CommonModule,
     NgxMatDatetimePickerModule,
+    NgxMatMomentModule,
+    MatDatepickerModule,
+    MatInputModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
     MomentModule,
@@ -337,6 +356,10 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     checkCiscoSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
-  ]
+  ],
+  providers: [
+    
+      { provide: NGX_MAT_DATE_FORMATS, useValue: DATETIME_FORMATS }
+    ]
 })
 export class SharedModule {}

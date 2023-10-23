@@ -52,7 +52,7 @@
         </div>
         <div class="text-field date-selection">
           <label>{{'supervisor.date-time'  | translate }}</label>
-          <mat-form-field [formGroup]="formGroup" appearance="outline" >
+          <!-- <mat-form-field [formGroup]="formGroup" appearance="outline" >
             <input matInput [ngxMatDatetimePicker]="picker1" [min]="announceDateMin"  [formControl]="announceDate" (dateChange)="onValidateExpiryDate(announceDate.value)"  >
             <mat-datepicker-toggle matSuffix  [for]="picker1"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker1 [stepHour]="1" [stepMinute]="5" >
@@ -60,20 +60,30 @@
             <mat-error *ngIf="announceDate.hasError('required')">
               {{'supervisor.select-calender'  | translate }}
             </mat-error>
+          </mat-form-field> -->
+
+          <mat-form-field [formGroup]="formGroup">
+            <input
+              matInput
+              [ngxMatDatetimePicker]="picker"
+              placeholder="Choose a date"
+              [formControl]="announceDate"
+              [min]="announceDateMin"
+              (dateChange)="onValidateExpiryDate(announceDate.value)" 
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker
+              #picker
+              [showSpinners]="showSpinners"
+              [showSeconds]="showSeconds"
+              [stepHour]="stepHour"
+              [stepMinute]="stepMinute"
+              [stepSecond]="stepSecond"
+              
+            >
+            </ngx-mat-datetime-picker>
           </mat-form-field>
 
-          <!--
-             [formControl]="announceDate" (dateChange)="onValidateExpiryDate(announceDate.value)"
-            <mat-form-field>
-            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" 
-            [min]="minDate" [max]="maxDate" [disabled]="disabled">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
-            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
-            [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
-            [disableMinute]="disableMinute" [hideTime]="hideTime">
-            </ngx-mat-datetime-picker>
-           </mat-form-field> -->
 
 
 
