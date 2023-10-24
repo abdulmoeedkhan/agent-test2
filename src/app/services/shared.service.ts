@@ -39,7 +39,7 @@ export class sharedService {
     isMessageFormattingEnabled: false,
     isOutboundSmsSendandClose: false,
     isOutboundSmsEnabled: false,
-    prefixCode : ''
+    prefixCode: ''
   };
 
   //preffered language code of agent
@@ -60,7 +60,7 @@ export class sharedService {
     this.conversationSettings.isFileSharingEnabled = setting.isFileSharingEnabled;
     this.conversationSettings.isEmojisEnabled = setting.isEmojisEnabled;
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
-    this.conversationSettings.isOutboundSmsSendandClose=setting.isOutboundSmsSendandClose;
+    this.conversationSettings.isOutboundSmsSendandClose = setting.isOutboundSmsSendandClose;
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
     this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : ''
   }
@@ -80,7 +80,7 @@ export class sharedService {
     this.channelTypeList = channelTypes;
     try {
       localStorage.setItem("channelTypes", JSON.stringify(channelTypes));
-    } catch (e) {}
+    } catch (e) { }
     channelTypes.forEach((channelType) => {
       this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
@@ -127,8 +127,22 @@ export class sharedService {
   }
 
   Interceptor(e, res) {
-    if (res == "err") {
-      console.error("[Error]:", e);
+
+    if (res == "err" && e && e.error.error_detail && e.error.error_detail.reason && e.error.error_message) {
+      let statusCode: number = e.statusCode || 500;
+      let msg: string = e.error.error_message || "Unknown Error without specific Details";
+      let reason: string | undefined = e.error.error_detail.reason.error_description || e.error.error_detail.reason.error || e.error.error_detail.reason;
+
+      // Construct the error message dynamically based on the available information
+      let errorMessage = `${statusCode}: ${msg}`;
+      if (reason === undefined) {
+        reason = "No specific reason is provided";
+      }
+      errorMessage += `. Reason: ${reason}`;
+      this._snackbarService.open(errorMessage, "err");
+    }
+
+    else if (res == "err") {
       if (e.statusCode == 401) {
         this._snackbarService.open(this._translateService.instant("snackbar.UNAUTHORIZED-USER"), "err");
       } else if (e.statusCode == 400) {
